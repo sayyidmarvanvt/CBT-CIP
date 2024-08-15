@@ -32,7 +32,11 @@ export const registerUser = async (req, res, next) => {
     const { password: pass, ...rest } = user._doc;
     const token = generateToken(user._id);
     res
-      .cookie("access_token", token, { httpOnly: true })
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      })
       .status(201)
       .json({ success: true, ...rest });
   } catch (error) {
@@ -54,7 +58,11 @@ export const loginUser = async (req, res, next) => {
     const token = generateToken(user._id);
     const { password: pass, ...rest } = user._doc;
     res
-      .cookie("access_token", token, { httpOnly: true })
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      })
       .status(200)
       .json({ success: true, ...rest });
   } catch (error) {
@@ -99,20 +107,19 @@ export const updateUserProfile = async (req, res, next) => {
     return next(errorHandler(400, "Password cannot be updated via this route"));
   }
   try {
-   const user= await userModal
-      .findByIdAndUpdate(
-        req.params.id,
-        {
-          $set: {
-            name: req.body.name,
-            email: req.body.email,
-          },
+    const user = await userModal.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          name: req.body.name,
+          email: req.body.email,
         },
-        { new: true }
-      )
+      },
+      { new: true }
+    );
     const { password: pass, ...rest } = user._doc;
 
-    res.status(200).json({ success: true,...rest });
+    res.status(200).json({ success: true, ...rest });
   } catch (error) {
     next(error);
   }

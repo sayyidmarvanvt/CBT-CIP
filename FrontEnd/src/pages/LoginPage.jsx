@@ -11,8 +11,8 @@ import {
 const LoginPage = () => {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
-  const {error} = useSelector((state) => state.user);
- const url="https://eventplanner360-backend.onrender.com"
+  const { error } = useSelector((state) => state.user);
+  const url = "https://eventplanner360-backend.onrender.com";
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -20,14 +20,15 @@ const LoginPage = () => {
     });
   };
 
-
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const res = await axios.post(`${url}/api/users/login`, formData);
+      const res = await axios.post(`${url}/api/users/login`, formData, {
+        withCredentials: true,
+      });
       dispatch(loginSuccess(res.data));
 
       navigate("/");
@@ -56,7 +57,6 @@ const LoginPage = () => {
         />
         <button type="submit">Login</button>
       </form>
-      
     </div>
   );
 };
