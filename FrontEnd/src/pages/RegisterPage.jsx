@@ -11,7 +11,7 @@ import {
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({});
-  const { loading, error } = useSelector((state) => state.user);
+  const { error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
  const url="https://eventplanner360-backend.onrender.com"

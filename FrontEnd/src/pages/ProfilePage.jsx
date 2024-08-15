@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,8 +12,17 @@ const ProfilePage = () => {
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
-  const { currentUser, loading, error } = useSelector((state) => state.user);
- const url="https://eventplanner360-backend.onrender.com"
+  const { currentUser, error } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const url="https://eventplanner360-backend.onrender.com";
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/login");
+    }
+  }, [currentUser, navigate]);
+
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     dispatch(updateUserStart());
@@ -24,11 +34,13 @@ const ProfilePage = () => {
       dispatch(updateUserFailure(error.response.data.message));
     }
   };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
-console.log("formdata",formData);
-console.log("currentuser",currentUser);
+
+  // If the user is not authenticated, return null to prevent the component from rendering
+  if (!currentUser) return null;
 
   return (
     <div>
@@ -56,12 +68,12 @@ console.log("currentuser",currentUser);
         </form>
       ) : (
         <div>
-          <p>Name: {currentUser.name} </p>
-          <p>Email: {currentUser.email }</p>
+          <p>Name: {currentUser.name}</p>
+          <p>Email: {currentUser.email}</p>
           <button onClick={() => setEditMode(true)}>Edit Profile</button>
         </div>
       )}
-      <div>{error}</div>
+      {error && <div>{error}</div>}
     </div>
   );
 };
