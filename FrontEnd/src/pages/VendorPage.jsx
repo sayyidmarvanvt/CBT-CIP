@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,15 +18,22 @@ const VendorPage = () => {
     eventId: currentEvent?._id,
   });
   const [editingVendor, setEditingVendor] = useState(null);
-   const url="https://eventplanner360-backend.onrender.com"
+  const url = "https://eventplanner360-backend.onrender.com";
 
-  useEffect(()=>{fetchVendors()},[currentEvent,vendors])
+  useEffect(() => {
+    fetchVendors();
+  }, [currentEvent, vendors]);
 
   const fetchVendors = async () => {
     if (!currentEvent?._id) return;
     dispatch(vendorStart());
     try {
-      const res = await axios.get(`${url}/api/vendors/event/${currentEvent._id}`);
+      const res = await axios.get(
+        `${url}/api/vendors/event/${currentEvent._id}`,
+        {
+          withCredentials: true,
+        }
+      );
       dispatch(vendorSuccess(res.data.vendors));
     } catch (error) {
       dispatch(vendorFailure(error.message));
@@ -41,7 +48,9 @@ const VendorPage = () => {
     e.preventDefault();
     dispatch(vendorStart());
     try {
-      const res = await axios.post(`${url}/api/vendors/create`, vendorDetails);
+      const res = await axios.post(`${url}/api/vendors/create`, vendorDetails, {
+        withCredentials: true,
+      });
       dispatch(vendorSuccess([...vendors, res.data.vendor]));
       setVendorDetails({
         name: "",
@@ -73,7 +82,10 @@ const VendorPage = () => {
     try {
       const res = await axios.put(
         `${url}/api/vendors/update/${editingVendor._id}`,
-        vendorDetails
+        vendorDetails,
+        {
+          withCredentials: true,
+        }
       );
       // console.log();
 
@@ -82,7 +94,6 @@ const VendorPage = () => {
       //     ? res.data.updatedVendor
       //     : vendor
       // );
-    
 
       dispatch(vendorSuccess(res.data.updatedVendor));
       setEditingVendor(null);
@@ -101,7 +112,9 @@ const VendorPage = () => {
   const handleDelete = async (vendorId) => {
     dispatch(vendorStart());
     try {
-      await axios.delete(`${url}/api/vendors/delete/${vendorId}`);
+      await axios.delete(`${url}/api/vendors/delete/${vendorId}`, {
+        withCredentials: true,
+      });
       const updatedVendors = vendors.filter(
         (vendor) => vendor._id !== vendorId
       );
@@ -115,10 +128,16 @@ const VendorPage = () => {
     if (!currentEvent?._id) return;
     dispatch(vendorStart());
     try {
-      const res = await axios.post(`${url}/api/vendors/addToEvent`, {
-        vendorId,
-        eventId: currentEvent._id,
-      });
+      const res = await axios.post(
+        `${url}/api/vendors/addToEvent`,
+        {
+          vendorId,
+          eventId: currentEvent._id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       dispatch(vendorSuccess(res.data.vendors));
     } catch (error) {
       dispatch(vendorFailure(error.message));
@@ -132,19 +151,20 @@ const VendorPage = () => {
         <h2>Vendors</h2>
         {vendors.length > 0 ? (
           <ul>
-            {vendors.map((vendor) =>
-              vendor ? ( // Add this check
-                <li key={vendor._id}>
-                  {vendor.name} - {vendor.serviceType} - {vendor.status}
-                  <button onClick={() => handleEdit(vendor)}>Edit</button>
-                  <button onClick={() => handleDelete(vendor._id)}>
-                    Delete
-                  </button>
-                  <button onClick={() => addVendorToEvent(vendor._id)}>
-                    Add to Event
-                  </button>
-                </li>
-              ) : null // If vendor is null, render nothing
+            {vendors.map(
+              (vendor) =>
+                vendor ? ( // Add this check
+                  <li key={vendor._id}>
+                    {vendor.name} - {vendor.serviceType} - {vendor.status}
+                    <button onClick={() => handleEdit(vendor)}>Edit</button>
+                    <button onClick={() => handleDelete(vendor._id)}>
+                      Delete
+                    </button>
+                    <button onClick={() => addVendorToEvent(vendor._id)}>
+                      Add to Event
+                    </button>
+                  </li>
+                ) : null // If vendor is null, render nothing
             )}
           </ul>
         ) : (

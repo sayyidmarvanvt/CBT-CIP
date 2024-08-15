@@ -20,7 +20,7 @@ const EventPage = () => {
   const [isEditing, setIsEditing] = useState(false); // State to toggle between create and update
 
   const { currentEvent, loading, error } = useSelector((state) => state.user);
- const url="https://eventplanner360-backend.onrender.com"
+  const url = "https://eventplanner360-backend.onrender.com";
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +29,9 @@ const EventPage = () => {
 
   const getEventList = async () => {
     try {
-      const eventsResponse = await axios.get(`${url}/api/events/get`);
+      const eventsResponse = await axios.get(`${url}/api/events/get`, {
+        withCredentials: true,
+      });
       setEventsList(eventsResponse.data.events || []);
     } catch (error) {
       dispatch(eventFailure(error));
@@ -54,7 +56,13 @@ const EventPage = () => {
     dispatch(eventStart());
     try {
       // Create the event
-      const createResponse = await axios.post(`${url}/api/events/create`, eventData);
+      const createResponse = await axios.post(
+        `${url}/api/events/create`,
+        eventData,
+        {
+          withCredentials: true,
+        }
+      );
       dispatch(eventSuccess(createResponse.data));
       setEventData({
         title: "",

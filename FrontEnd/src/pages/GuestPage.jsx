@@ -19,7 +19,9 @@ const GuestPage = () => {
     if (currentEvent?._id) {
       fetchGuests();
     } else {
-      setError("Please create an event first, then come back to manage guests.");
+      setError(
+        "Please create an event first, then come back to manage guests."
+      );
     }
   }, [currentEvent?._id]);
 
@@ -30,7 +32,12 @@ const GuestPage = () => {
 
   const fetchGuests = async () => {
     try {
-      const response = await axios.get(`${url}/api/guests/get/${currentEvent._id}`);
+      const response = await axios.get(
+        `${url}/api/guests/get/${currentEvent._id}`,
+        {
+          withCredentials: true,
+        }
+      );
       setGuests(response.data.guests);
       setError(""); // Clear any existing error message
     } catch (error) {
@@ -45,11 +52,17 @@ const GuestPage = () => {
     }
 
     try {
-      const response = await axios.post(`${url}/api/guests/add`, {
-        name: guestData.name,
-        email: guestData.email,
-        eventId: currentEvent._id,
-      });
+      const response = await axios.post(
+        `${url}/api/guests/add`,
+        {
+          name: guestData.name,
+          email: guestData.email,
+          eventId: currentEvent._id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       setGuests([...guests, response.data.guest]);
       setGuestData({
         name: "",
@@ -71,16 +84,24 @@ const GuestPage = () => {
 
   const handleUpdateGuest = async () => {
     if (!currentEvent?._id) {
-      setError("Please create an event first, then come back to update guests.");
+      setError(
+        "Please create an event first, then come back to update guests."
+      );
       return;
     }
 
     try {
-      const response = await axios.put(`${url}/api/guests/update/${editingGuest}`, {
-        name: guestData.name,
-        email: guestData.email,
-        eventId: currentEvent._id,
-      });
+      const response = await axios.put(
+        `${url}/api/guests/update/${editingGuest}`,
+        {
+          name: guestData.name,
+          email: guestData.email,
+          eventId: currentEvent._id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       setGuests(response.data.updatedGuest);
       setEditingGuest(null);
@@ -96,7 +117,9 @@ const GuestPage = () => {
 
   const handleDeleteGuest = async (guestId) => {
     try {
-      await axios.delete(`${url}/api/guests/remove/${guestId}`);
+      await axios.delete(`${url}/api/guests/remove/${guestId}`, {
+        withCredentials: true,
+      });
       setGuests(guests.filter((guest) => guest._id !== guestId));
     } catch (error) {
       console.error("Error deleting guest", error);
@@ -105,15 +128,23 @@ const GuestPage = () => {
 
   const handleInviteGuest = async (guest) => {
     if (!currentEvent?._id) {
-      setError("Please create an event first, then come back to invite guests.");
+      setError(
+        "Please create an event first, then come back to invite guests."
+      );
       return;
     }
 
     try {
-      await axios.post(`${url}/api/guests/invite/${guest._id}`, {
-        email: guest.email,
-        eventId: currentEvent._id,
-      });
+      await axios.post(
+        `${url}/api/guests/invite/${guest._id}`,
+        {
+          email: guest.email,
+          eventId: currentEvent._id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       alert(`Invitation sent to ${guest.name}`);
     } catch (error) {
       console.error("Error sending invitation", error);
@@ -123,8 +154,8 @@ const GuestPage = () => {
   return (
     <div>
       <h2>Guest List</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>} {/* Display error message */}
-
+      {error && <p style={{ color: "red" }}>{error}</p>}{" "}
+      {/* Display error message */}
       {guests.length > 0 ? (
         <ul>
           {guests.map((guest) =>
@@ -147,7 +178,6 @@ const GuestPage = () => {
       ) : (
         <p>Please create guests</p>
       )}
-
       <h3>{editingGuest ? "Update Guest" : "Add Guest"}</h3>
       <input
         type="text"

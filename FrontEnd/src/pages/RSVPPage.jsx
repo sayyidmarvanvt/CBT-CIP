@@ -13,7 +13,9 @@ const RSVPPage = () => {
     // Fetch the current RSVP status
     const fetchRSVPStatus = async () => {
       try {
-        const response = await axios.get(`${url}/api/guests/rsvp/${guestId}`);
+        const response = await axios.get(`${url}/api/guests/rsvp/${guestId}`,{
+          withCredentials: true, 
+        });
         setRsvpStatus(response.data.rsvpStatus);
         
       } catch (error) {
@@ -27,7 +29,9 @@ const RSVPPage = () => {
 
   const handleRSVPChange = async (status) => {
     try {
-      const response = await axios.put(`${url}/api/guests/rsvp/${guestId}`, { rsvpStatus: status });
+      const response = await axios.put(`${url}/api/guests/rsvp/${guestId}`, { rsvpStatus: status },{
+        withCredentials: true, 
+      });
       setRsvpStatus(response.data.guest.rsvpStatus);
     } catch (error) {
       setError('Failed to update RSVP status.');

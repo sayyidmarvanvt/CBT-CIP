@@ -27,7 +27,9 @@ const ProfilePage = () => {
     e.preventDefault();
     dispatch(updateUserStart());
     try {
-      const res = await axios.put(`${url}/api/users/update-profile/${currentUser._id}`, formData);
+      const res = await axios.put(`${url}/api/users/update-profile/${currentUser._id}`, formData,{
+        withCredentials: true, 
+      });
       dispatch(updateUserSuccess(res.data));
       setEditMode(false);
     } catch (error) {
