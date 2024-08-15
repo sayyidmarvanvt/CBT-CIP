@@ -37,9 +37,10 @@ app.use("/api/vendors", vendorRouter);
 app.use(notFound);
 app.use(errorHandlerMiddleware);
 
-app.get("/", (req, res) => {
-  res.send("api working");
+app.get('/', (req, res) => {
+  res.send('Backend is running.');
 });
+
 
 app.listen(process.env.PORT, () => {
   console.log(`Server Started on http://localhost:${process.env.PORT}`);
