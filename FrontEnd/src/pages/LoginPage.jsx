@@ -11,7 +11,7 @@ import {
 const LoginPage = () => {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
-  const { currentUser, error, loading } = useSelector((state) => state.user);
+  const {error} = useSelector((state) => state.user);
  const url="https://eventplanner360-backend.onrender.com"
   const handleChange = (e) => {
     setFormData({
