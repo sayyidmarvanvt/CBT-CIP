@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   signInFailure,
@@ -10,11 +10,10 @@ import {
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({});
-  const dispatch = useDispatch();
-  const { error, loading } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const url = "https://eventplanner360-backend.onrender.com";
-
+  
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -30,7 +29,8 @@ const RegisterPage = () => {
       dispatch(signInSuccess(res.data));
       navigate("/login");
     } catch (error) {
-      dispatch(signInFailure(error));
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      dispatch(signInFailure(errorMessage));
     }
   };
 
@@ -59,11 +59,8 @@ const RegisterPage = () => {
           onChange={handleChange}
           required
         />
-        <button type="submit" disabled={loading}>
-          {loading ? "Registering..." : "Register"}
-        </button>
+        <button type="submit">Register</button>
       </form>
-      <div>{error ? error : ''}</div>
     </div>
   );
 };

@@ -11,7 +11,6 @@ import {
 const LoginPage = () => {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
-  const { error } = useSelector((state) => state.user);
   const url = "https://eventplanner360-backend.onrender.com";
   
   const handleChange = (e) => {
@@ -31,8 +30,7 @@ const LoginPage = () => {
       dispatch(loginSuccess(res.data));
       navigate("/");
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "An error occurred";
-      dispatch(loginFailure(errorMessage));
+      dispatch(loginFailure(error));
     }
   };
 
@@ -56,7 +54,7 @@ const LoginPage = () => {
         />
         <button type="submit">Login</button>
       </form>
-      {error && <div>{typeof error === "string" ? error : JSON.stringify(error)}</div>}
+      {/* {error && <div>{typeof error === "string" ? error : JSON.stringify(error)}</div>} */}
     </div>
   );
 };

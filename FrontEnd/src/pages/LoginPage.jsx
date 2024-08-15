@@ -56,7 +56,7 @@ const LoginPage = () => {
         />
         <button type="submit">Login</button>
       </form>
-      <div>{error ? error : ''}</div>
+      
     </div>
   );
 };
