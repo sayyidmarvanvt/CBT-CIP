@@ -127,7 +127,7 @@ const EventPage = () => {
   const handleDelete = async (eventId) => {
     try {
       console.log("Deleting event with ID:", eventId);
-      await axios.delete(`/api/events/delete/${eventId}`);
+      await axios.delete(`${url}/api/events/delete/${eventId}`);
       await getEventList();
     } catch (error) {
       dispatch(eventFailure(error));
