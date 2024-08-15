@@ -31,6 +31,8 @@ export const createEvent = async (req, res, next) => {
 
 export const deleteEvent = async (req, res, next) => {
   try {
+    console.log("Deleting event with ID:", req.params.id);
+    console.log(req.user);
     const event = await eventModal.findById(req.params.id);
     if (!event) {
       return next(errorHandler(404, "Event not found"));
