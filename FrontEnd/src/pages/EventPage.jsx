@@ -16,8 +16,8 @@ const EventPage = () => {
   });
 
   const [eventsList, setEventsList] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null); // State for selected event
-  const [isEditing, setIsEditing] = useState(false); // State to toggle between create and update
+  const [selectedEvent, setSelectedEvent] = useState(null); 
+  const [isEditing, setIsEditing] = useState(false);
 
   const { currentEvent, loading, error } = useSelector((state) => state.user);
   const url = "https://eventplanner360-backend.onrender.com";
@@ -42,7 +42,7 @@ const EventPage = () => {
     // Convert ISO date to yyyy-MM-dd format
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = `0${date.getMonth() + 1}`.slice(-2); // Months are zero-based
+    const month = `0${date.getMonth() + 1}`.slice(-2); 
     const day = `0${date.getDate()}`.slice(-2);
     return `${year}-${month}-${day}`;
   };
@@ -70,8 +70,7 @@ const EventPage = () => {
         location: "",
         description: "",
       });
-      setIsEditing(false); // Reset editing state
-      // Refresh the events list
+      setIsEditing(false); 
       await getEventList();
     } catch (err) {
       dispatch(eventFailure(err));
@@ -95,7 +94,7 @@ const EventPage = () => {
       const formattedDate = formatDate(eventResponse.data.date);
       setEventData({ ...eventResponse.data, date: formattedDate });
       setSelectedEvent(eventId);
-      setIsEditing(true); // Set editing state
+      setIsEditing(true); 
     } catch (error) {
       dispatch(eventFailure(error));
     }

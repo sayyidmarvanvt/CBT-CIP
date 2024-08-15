@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   loginFailure,
   loginStart,
@@ -11,7 +11,6 @@ import {
 const LoginPage = () => {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
-  const { error } = useSelector((state) => state.user);
   const url = "https://eventplanner360-backend.onrender.com";
   const handleChange = (e) => {
     setFormData({
@@ -30,7 +29,6 @@ const LoginPage = () => {
         withCredentials: true,
       });
       dispatch(loginSuccess(res.data));
-
       navigate("/");
     } catch (error) {
       dispatch(loginFailure(error.response.data.message));
