@@ -12,7 +12,7 @@ const LoginPage = () => {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
   const { currentUser, error, loading } = useSelector((state) => state.user);
-
+ const url="https://eventplanner360-backend.onrender.com"
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,7 +26,7 @@ const LoginPage = () => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const res = await axios.post("/api/users/login", formData);
+      const res = await axios.post(`${url}/api/users/login`, formData);
       dispatch(loginSuccess(res.data));
 
       navigate("/");

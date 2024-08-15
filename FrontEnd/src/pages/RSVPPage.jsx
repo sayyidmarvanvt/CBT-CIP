@@ -6,14 +6,14 @@ const RSVPPage = () => {
   const { guestId } = useParams(); // Get guestId from the URL
   const [rsvpStatus, setRsvpStatus] = useState('');
   const [error, setError] = useState('');
-
+ const url="https://eventplanner360-backend.onrender.com"
   console.log(guestId);
   
   useEffect(() => {
     // Fetch the current RSVP status
     const fetchRSVPStatus = async () => {
       try {
-        const response = await axios.get(`/api/guests/rsvp/${guestId}`);
+        const response = await axios.get(`${url}/api/guests/rsvp/${guestId}`);
         setRsvpStatus(response.data.rsvpStatus);
         
       } catch (error) {
@@ -27,7 +27,7 @@ const RSVPPage = () => {
 
   const handleRSVPChange = async (status) => {
     try {
-      const response = await axios.put(`/api/guests/rsvp/${guestId}`, { rsvpStatus: status });
+      const response = await axios.put(`${url}/api/guests/rsvp/${guestId}`, { rsvpStatus: status });
       setRsvpStatus(response.data.guest.rsvpStatus);
     } catch (error) {
       setError('Failed to update RSVP status.');

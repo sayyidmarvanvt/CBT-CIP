@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateUserFailure,
@@ -13,13 +12,12 @@ const ProfilePage = () => {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
   const { currentUser, loading, error } = useSelector((state) => state.user);
-  const navigate = useNavigate();
-
+ const url="https://eventplanner360-backend.onrender.com"
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     dispatch(updateUserStart());
     try {
-      const res = await axios.put(`/api/users/update-profile/${currentUser._id}`, formData);
+      const res = await axios.put(`${url}/api/users/update-profile/${currentUser._id}`, formData);
       dispatch(updateUserSuccess(res.data));
       setEditMode(false);
     } catch (error) {

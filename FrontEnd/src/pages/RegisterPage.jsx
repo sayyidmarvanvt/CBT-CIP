@@ -14,7 +14,7 @@ const RegisterPage = () => {
   const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+ const url="https://eventplanner360-backend.onrender.com"
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,7 +26,7 @@ const RegisterPage = () => {
     e.preventDefault();
     dispatch(signInStart());
     try {
-      const res = await axios.post("/api/users/register", formData);
+      const res = await axios.post(`${url}/api/users/register`, formData);
       console.log(res.data);
       dispatch(signInSuccess(res.data));
       navigate("/login");

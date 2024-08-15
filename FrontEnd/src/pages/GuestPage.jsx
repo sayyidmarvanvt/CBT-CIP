@@ -11,6 +11,7 @@ const GuestPage = () => {
     eventId: currentEvent._id,
   });
   const [editingGuest, setEditingGuest] = useState(null);
+   const url="https://eventplanner360-backend.onrender.com"
 
   useEffect(() => {
     fetchGuests();
@@ -23,7 +24,7 @@ const GuestPage = () => {
 
   const fetchGuests = async () => {
     try {
-      const response = await axios.get(`/api/guests/get/${currentEvent._id}`);
+      const response = await axios.get(`${url}/api/guests/get/${currentEvent._id}`);
       setGuests(response.data.guests);
     } catch (error) {
       console.error("Error fetching guests", error);
@@ -32,7 +33,7 @@ const GuestPage = () => {
 
   const handleAddGuest = async () => {
     try {
-      const response = await axios.post("/api/guests/add", {
+      const response = await axios.post(`${url}/api/guests/add`, {
         name: guestData.name,
         email: guestData.email,
         eventId: currentEvent._id,
@@ -57,7 +58,7 @@ const GuestPage = () => {
 
   const handleUpdateGuest = async () => {
     try {
-      const response = await axios.put(`/api/guests/update/${editingGuest}`, {
+      const response = await axios.put(`${url}/api/guests/update/${editingGuest}`, {
         name: guestData.name,
         email: guestData.email,
         eventId: currentEvent._id,
@@ -76,7 +77,7 @@ const GuestPage = () => {
 
   const handleDeleteGuest = async (guestId) => {
     try {
-      await axios.delete(`/api/guests/remove/${guestId}`);
+      await axios.delete(`${url}/api/guests/remove/${guestId}`);
       setGuests(guests.filter((guest) => guest._id !== guestId));
     } catch (error) {
       console.error("Error deleting guest", error);
@@ -85,7 +86,7 @@ const GuestPage = () => {
 
   const handleInviteGuest = async (guest) => {
     try {
-      await axios.post(`/api/guests/invite/${guest._id}`, {
+      await axios.post(`${url}/api/guests/invite/${guest._id}`, {
         email: guest.email,
         eventId: currentEvent._id,
       });

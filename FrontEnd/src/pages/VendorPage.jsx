@@ -18,7 +18,7 @@ const VendorPage = () => {
     eventId: currentEvent?._id,
   });
   const [editingVendor, setEditingVendor] = useState(null);
-  
+   const url="https://eventplanner360-backend.onrender.com"
 
   useEffect(()=>{fetchVendors()},[currentEvent,vendors])
 
@@ -26,7 +26,7 @@ const VendorPage = () => {
     if (!currentEvent?._id) return;
     dispatch(vendorStart());
     try {
-      const res = await axios.get(`/api/vendors/event/${currentEvent._id}`);
+      const res = await axios.get(`${url}/api/vendors/event/${currentEvent._id}`);
       dispatch(vendorSuccess(res.data.vendors));
     } catch (error) {
       dispatch(vendorFailure(error.message));
@@ -41,7 +41,7 @@ const VendorPage = () => {
     e.preventDefault();
     dispatch(vendorStart());
     try {
-      const res = await axios.post("/api/vendors/create", vendorDetails);
+      const res = await axios.post(`${url}/api/vendors/create`, vendorDetails);
       dispatch(vendorSuccess([...vendors, res.data.vendor]));
       setVendorDetails({
         name: "",
@@ -72,7 +72,7 @@ const VendorPage = () => {
     dispatch(vendorStart());
     try {
       const res = await axios.put(
-        `/api/vendors/update/${editingVendor._id}`,
+        `${url}/api/vendors/update/${editingVendor._id}`,
         vendorDetails
       );
       // console.log();
@@ -99,10 +99,9 @@ const VendorPage = () => {
   };
 
   const handleDelete = async (vendorId) => {
-    if (!window.confirm("Are you sure you want to delete this vendor?")) return;
     dispatch(vendorStart());
     try {
-      await axios.delete(`/api/vendors/delete/${vendorId}`);
+      await axios.delete(`${url}/api/vendors/delete/${vendorId}`);
       const updatedVendors = vendors.filter(
         (vendor) => vendor._id !== vendorId
       );
@@ -116,7 +115,7 @@ const VendorPage = () => {
     if (!currentEvent?._id) return;
     dispatch(vendorStart());
     try {
-      const res = await axios.post(`/api/vendors/addToEvent`, {
+      const res = await axios.post(`${url}/api/vendors/addToEvent`, {
         vendorId,
         eventId: currentEvent._id,
       });

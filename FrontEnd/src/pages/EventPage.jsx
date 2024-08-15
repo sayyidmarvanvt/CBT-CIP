@@ -20,7 +20,7 @@ const EventPage = () => {
   const [isEditing, setIsEditing] = useState(false); // State to toggle between create and update
 
   const { currentEvent, loading, error } = useSelector((state) => state.user);
-
+ const url="https://eventplanner360-backend.onrender.com"
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const EventPage = () => {
 
   const getEventList = async () => {
     try {
-      const eventsResponse = await axios.get(`/api/events/get`);
+      const eventsResponse = await axios.get(`${url}/api/events/get`);
       setEventsList(eventsResponse.data.events || []);
     } catch (error) {
       dispatch(eventFailure(error));
@@ -54,7 +54,7 @@ const EventPage = () => {
     dispatch(eventStart());
     try {
       // Create the event
-      const createResponse = await axios.post("/api/events/create", eventData);
+      const createResponse = await axios.post(`${url}/api/events/create`, eventData);
       dispatch(eventSuccess(createResponse.data));
       setEventData({
         title: "",
@@ -72,7 +72,7 @@ const EventPage = () => {
 
   const handleSelect = async (eventId) => {
     try {
-      const eventResponse = await axios.get(`/api/events/get/${eventId}`);
+      const eventResponse = await axios.get(`${url}/api/events/get/${eventId}`);
       setSelectedEvent(eventResponse.data);
       dispatch(eventSuccess(eventResponse.data));
     } catch (error) {
@@ -82,7 +82,7 @@ const EventPage = () => {
 
   const handleEdit = async (eventId) => {
     try {
-      const eventResponse = await axios.get(`/api/events/get/${eventId}`);
+      const eventResponse = await axios.get(`${url}/api/events/get/${eventId}`);
       // Format date to yyyy-MM-dd
       const formattedDate = formatDate(eventResponse.data.date);
       setEventData({ ...eventResponse.data, date: formattedDate });

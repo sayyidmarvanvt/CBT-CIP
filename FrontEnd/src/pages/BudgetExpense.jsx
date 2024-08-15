@@ -14,16 +14,14 @@ const BudgetExpense = () => {
   });
   const [editingExpense, setEditingExpense] = useState(null);
   const [editingCategory, setEditingCategory] = useState(null);
-
-
   
-  
+  const url="https://eventplanner360-backend.onrender.com"
 
   // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(`/api/budgets/${currentEvent._id}`);
+        const response = await axios.get(`${url}/api/budgets/${currentEvent._id}`);
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -36,7 +34,7 @@ const BudgetExpense = () => {
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        const response = await axios.get(`/api/expenses/${currentEvent._id}`);
+        const response = await axios.get(`${url}/api/expenses/${currentEvent._id}`);
         setExpenses(response.data);
       } catch (error) {
         console.error("Error fetching expenses:", error);
@@ -50,7 +48,7 @@ const BudgetExpense = () => {
     try {
       if (editingCategory) {
         // Edit existing category
-        await axios.put(`/api/budgets/categories/${editingCategory._id}`, {
+        await axios.put(`${url}/api/budgets/categories/${editingCategory._id}`, {
           name: categoryName,
         });
         setCategories(
@@ -62,7 +60,7 @@ const BudgetExpense = () => {
         );
       } else {
         // Add new category
-        const response = await axios.post(`/api/budgets/categories`, {
+        const response = await axios.post(`${url}/api/budgets/categories`, {
           name: categoryName,
           eventId: currentEvent._id,
         });
@@ -80,7 +78,7 @@ const BudgetExpense = () => {
     try {
       if (editingExpense) {
         // Edit existing expense
-        await axios.put(`/api/expenses/${editingExpense._id}`, expenseData);
+        await axios.put(`${url}/api/expenses/${editingExpense._id}`, expenseData);
         setExpenses(
           expenses.map((expense) =>
             expense._id === editingExpense._id
@@ -90,7 +88,7 @@ const BudgetExpense = () => {
         );
       } else {
         // Add new expense
-        const response = await axios.post(`/api/expenses`, {
+        const response = await axios.post(`${url}/api/expenses`, {
           ...expenseData,
           eventId: currentEvent._id,
         });
@@ -106,7 +104,7 @@ const BudgetExpense = () => {
   // Handle deleting a category
   const handleDeleteCategory = async (id) => {
     try {
-      await axios.delete(`/api/budgets/categories/${id}`);
+      await axios.delete(`${url}/api/budgets/categories/${id}`);
       setCategories(categories.filter((category) => category._id !== id));
     } catch (error) {
       console.error("Error deleting category:", error);
@@ -116,7 +114,7 @@ const BudgetExpense = () => {
   // Handle deleting an expense
   const handleDeleteExpense = async (id) => {
     try {
-      await axios.delete(`/api/expenses/${id}`);
+      await axios.delete(`${url}/api/expenses/${id}`);
       setExpenses(expenses.filter((expense) => expense._id !== id));
     } catch (error) {
       console.error("Error deleting expense:", error);
