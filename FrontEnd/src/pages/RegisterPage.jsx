@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import {
   signInFailure,
@@ -14,7 +13,8 @@ const RegisterPage = () => {
   const { error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
- const url="https://eventplanner360-backend.onrender.com"
+  const url = "https://eventplanner360-backend.onrender.com";
+  
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -27,11 +27,11 @@ const RegisterPage = () => {
     dispatch(signInStart());
     try {
       const res = await axios.post(`${url}/api/users/register`, formData);
-      console.log(res.data);
       dispatch(signInSuccess(res.data));
       navigate("/login");
     } catch (error) {
-      dispatch(signInFailure(error.response.data.message));
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      dispatch(signInFailure(errorMessage));
     }
   };
 
@@ -62,7 +62,7 @@ const RegisterPage = () => {
         />
         <button type="submit">Register</button>
       </form>
-      <div>{error}</div>
+      {error && <div>{typeof error === "string" ? error : JSON.stringify(error)}</div>}
     </div>
   );
 };
