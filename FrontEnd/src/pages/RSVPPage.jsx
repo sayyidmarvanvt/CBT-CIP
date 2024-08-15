@@ -17,7 +17,7 @@ const RSVPPage = () => {
         setRsvpStatus(response.data.rsvpStatus);
         
       } catch (error) {
-        setError('Failed to load RSVP status.');
+        setError('No RSVP status.');
         
       }
     };
