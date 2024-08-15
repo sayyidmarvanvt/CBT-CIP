@@ -11,10 +11,10 @@ import { verifyToken } from "../Utility/verifyToken.js";
 
 const eventRouter = express.Router();
 
-eventRouter.get("/get", getAllEvents);
-eventRouter.post("/create", createEvent);
+eventRouter.get("/get", verifyToken, getAllEvents);
+eventRouter.post("/create", verifyToken, createEvent);
 eventRouter.delete("/delete/:id", verifyToken, deleteEvent);
 eventRouter.put("/update/:id", verifyToken, updateEvent);
-eventRouter.get("/get/:id", getEventWithId);
+eventRouter.get("/get/:id", verifyToken, getEventWithId);
 
 export default eventRouter;
