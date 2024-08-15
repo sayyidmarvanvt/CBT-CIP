@@ -1,62 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  loginFailure,
-  loginStart,
-  loginSuccess,
+  updateUserFailure,
+  updateUserSuccess,
+  updateUserStart,
 } from "../redux/user/userSlice";
 
-const LoginPage = () => {
+const ProfilePage = () => {
+  const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
-  const url = "https://eventplanner360-backend.onrender.com";
-  
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
-    });
-  };
-
+  const { currentUser} = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const url="https://eventplanner360-backend.onrender.com";
 
-  const handleLogin = async (e) => {
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/login");
+    }
+  }, [currentUser]);
+
+  const handleSaveProfile = async (e) => {
     e.preventDefault();
-    dispatch(loginStart());
+    dispatch(updateUserStart());
     try {
-      const res = await axios.post(`${url}/api/users/login`, formData);
-      dispatch(loginSuccess(res.data));
-      navigate("/");
+      const res = await axios.put(`${url}/api/users/update-profile/${currentUser._id}`, formData);
+      dispatch(updateUserSuccess(res.data));
+      setEditMode(false);
     } catch (error) {
-      dispatch(loginFailure(error));
+      dispatch(updateUserFailure(error.response.data.message));
     }
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  // If the user is not authenticated, return null to prevent the component from rendering
+  if (!currentUser) return null;
+
   return (
     <div>
-      <h1>Login</h1>
-      <form className="container" onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          id="email"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          id="password"
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      {/* {error && <div>{typeof error === "string" ? error : JSON.stringify(error)}</div>} */}
+      <h1>Profile</h1>
+      {editMode ? (
+        <form className="container" onSubmit={handleSaveProfile}>
+          <input
+            type="text"
+            id="name"
+            defaultValue={currentUser.name}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="email"
+            id="email"
+            defaultValue={currentUser.email}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">Save</button>
+          <button type="button" onClick={() => setEditMode(false)}>
+            Cancel
+          </button>
+        </form>
+      ) : (
+        <div>
+          <p>Name: {currentUser.name}</p>
+          <p>Email: {currentUser.email}</p>
+          <button onClick={() => setEditMode(true)}>Edit Profile</button>
+        </div>
+      )}
     </div>
   );
 };
 
-export default LoginPage;
+export default ProfilePage;
