@@ -4,19 +4,21 @@ import { Link } from "react-router-dom";
 const NavigationBar = () => {
   return (
     <div className="flexCenter">
-      <div className="flexRow">
-        <Link to={"/"}>
-          <ul>HomePage</ul>
-        </Link>
-        <Link to={"/login"}>
-          <ul>LoginPage</ul>
-        </Link>
-        <Link to={"/register"}>
-          <ul>RegisterPage</ul>
-        </Link>
-        <Link to={"/profile"}>
-          <ul>ProfilePage</ul>
-        </Link>
+      <div>
+        <ul className="flexRow">
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+          <li>
+            <Link to="/register">Register</Link>
+          </li>
+          <li>
+            <Link to="/profile">Profile</Link>
+          </li>
+        </ul>
       </div>
     </div>
   );

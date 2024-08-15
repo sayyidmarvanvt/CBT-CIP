@@ -36,7 +36,9 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-input, option,select{
+input,
+option,
+select {
   padding: 0.6em 1.2em;
 }
 button {
@@ -71,22 +73,22 @@ button:focus-visible {
   }
 }
 
-.container{
+.container {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.flexRow{
+.flexRow {
   display: flex;
   flex-direction: row;
+  gap: 10px;
+  list-style: none;
 }
 
-.flexCenter{
-  
+.flexCenter {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  
 }
