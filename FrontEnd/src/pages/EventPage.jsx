@@ -16,7 +16,7 @@ const EventPage = () => {
   });
 
   const [eventsList, setEventsList] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null); 
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
   const { currentEvent, loading, error } = useSelector((state) => state.user);
@@ -42,7 +42,7 @@ const EventPage = () => {
     // Convert ISO date to yyyy-MM-dd format
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = `0${date.getMonth() + 1}`.slice(-2); 
+    const month = `0${date.getMonth() + 1}`.slice(-2);
     const day = `0${date.getDate()}`.slice(-2);
     return `${year}-${month}-${day}`;
   };
@@ -70,7 +70,7 @@ const EventPage = () => {
         location: "",
         description: "",
       });
-      setIsEditing(false); 
+      setIsEditing(false);
       await getEventList();
     } catch (err) {
       dispatch(eventFailure(err));
@@ -79,7 +79,12 @@ const EventPage = () => {
 
   const handleSelect = async (eventId) => {
     try {
-      const eventResponse = await axios.get(`${url}/api/events/get/${eventId}`);
+      const eventResponse = await axios.get(
+        `${url}/api/events/get/${eventId}`,
+        {
+          withCredentials: true,
+        }
+      );
       setSelectedEvent(eventResponse.data);
       dispatch(eventSuccess(eventResponse.data));
     } catch (error) {
@@ -89,12 +94,17 @@ const EventPage = () => {
 
   const handleEdit = async (eventId) => {
     try {
-      const eventResponse = await axios.get(`${url}/api/events/get/${eventId}`);
+      const eventResponse = await axios.get(
+        `${url}/api/events/get/${eventId}`,
+        {
+          withCredentials: true,
+        }
+      );
       // Format date to yyyy-MM-dd
       const formattedDate = formatDate(eventResponse.data.date);
       setEventData({ ...eventResponse.data, date: formattedDate });
       setSelectedEvent(eventId);
-      setIsEditing(true); 
+      setIsEditing(true);
     } catch (error) {
       dispatch(eventFailure(error));
     }
@@ -105,8 +115,11 @@ const EventPage = () => {
     try {
       // Update the event
       const updateResponse = await axios.put(
-        `/api/events/update/${selectedEvent}`,
-        eventData
+        `${url}/api/events/update/${selectedEvent}`,
+        eventData,
+        {
+          withCredentials: true,
+        }
       );
       dispatch(eventSuccess(updateResponse.data));
       setEventData({
@@ -127,7 +140,9 @@ const EventPage = () => {
   const handleDelete = async (eventId) => {
     try {
       console.log("Deleting event with ID:", eventId);
-      await axios.delete(`${url}/api/events/delete/${eventId}`);
+      await axios.delete(`${url}/api/events/delete/${eventId}`, {
+        withCredentials: true,
+      });
       await getEventList();
     } catch (error) {
       dispatch(eventFailure(error));
