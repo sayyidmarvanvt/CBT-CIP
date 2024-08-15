@@ -19,7 +19,13 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+
+const corsOptions = {
+  origin: 'https://eventplanner-frontend-sdjb.onrender.com', 
+  credentials: true, 
+};
+
+app.use(cors(corsOptions));
 
 connectDB();
 
