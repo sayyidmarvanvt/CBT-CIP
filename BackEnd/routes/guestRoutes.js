@@ -4,17 +4,17 @@ import { addGuest, getAllGuest, getGuest, getGuestRSVPStatus, inviteGuest, remov
 
 const guestRouter=express.Router()
 
-guestRouter.post('/add',verifyToken,addGuest)
-guestRouter.get('/get/:eventId',verifyToken,getAllGuest)
-guestRouter.get('/get/:id',verifyToken,getGuest)
-guestRouter.put('/update/:id',verifyToken,updateGuest)
-guestRouter.delete('/remove/:id',verifyToken,removeGuest)
+guestRouter.post('/add',addGuest)
+guestRouter.get('/get/:eventId',getAllGuest)
+guestRouter.get('/get/:id',getGuest)
+guestRouter.put('/update/:id',updateGuest)
+guestRouter.delete('/remove/:id',removeGuest)
 
-guestRouter.post("/invite/:id",verifyToken,inviteGuest)
+guestRouter.post("/invite/:id",inviteGuest)
 
 
 //RSVP status
-guestRouter.put('/rsvp/:guestId', verifyToken, updateRSVPStatus);
-guestRouter.get('/rsvp/:guestId', verifyToken, getGuestRSVPStatus);
+guestRouter.put('/rsvp/:guestId', updateRSVPStatus);
+guestRouter.get('/rsvp/:guestId', getGuestRSVPStatus);
 
 export default guestRouter;

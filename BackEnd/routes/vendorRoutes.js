@@ -11,11 +11,11 @@ import { verifyToken } from "../Utility/verifyToken.js";
 
 const vendorRouter = express.Router();
 
-vendorRouter.post("/create", verifyToken, createVendor);
-vendorRouter.get("/event/:eventId", verifyToken, getVendorsByEvent);
-vendorRouter.get("/:id", verifyToken, getVendorById);
-vendorRouter.put("/update/:id", verifyToken, updateVendor);
-vendorRouter.delete("/delete/:id", verifyToken, deleteVendor);
-vendorRouter.post("/addToEvent", verifyToken,addVendorToEvent);
+vendorRouter.post("/create", createVendor);
+vendorRouter.get("/event/:eventId", getVendorsByEvent);
+vendorRouter.get("/:id", getVendorById);
+vendorRouter.put("/update/:id",  updateVendor);
+vendorRouter.delete("/delete/:id",  deleteVendor);
+vendorRouter.post("/addToEvent", addVendorToEvent);
 
 export default vendorRouter;
