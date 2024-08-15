@@ -32,14 +32,14 @@ app.use("/api/expenses", expenseRouter);
 app.use("/api/schedule", scheduleRouter);
 app.use("/api/vendors", vendorRouter);
 
+app.get('/', (req, res) => {
+  res.send('Backend is running.');
+});
 
 //miidlewares
 app.use(notFound);
 app.use(errorHandlerMiddleware);
 
-app.get('/', (req, res) => {
-  res.send('Backend is running.');
-});
 
 
 app.listen(process.env.PORT, () => {
